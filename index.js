@@ -71,7 +71,8 @@ const PRIORITY_DOMAINS = [
   'vakansiya.az',
   'glorri.az',
   'jobs.glorri.az',
-  'buff.ly'  // Used by jobsearch.az
+  'buff.ly',    // Used by jobsearch.az
+  'qlor.me'     // Used by glorri.az
 ];
 
 // Short link domains to skip (buff.ly removed - used by jobsearch.az)
