@@ -167,21 +167,68 @@ function normalizeText(text) {
 }
 
 /**
+ * Extract URLs from message (text, entities, and buttons)
+ * Returns all URLs from message including inline button URLs
+ */
+function extractAllUrls(message) {
+  const urls = [];
+  
+  // 1. Extract from message text
+  if (message.message) {
+    const urlRegex = /(https?:\/\/[^\s]+)/gi;
+    const matches = message.message.match(urlRegex) || [];
+    urls.push(...matches);
+  }
+  
+  // 2. Extract from message entities (URL, TEXT_LINK)
+  if (message.entities) {
+    for (const entity of message.entities) {
+      if (entity.url) {
+        urls.push(entity.url);
+      }
+    }
+  }
+  
+  // 3. Extract from inline buttons
+  if (message.buttons) {
+    for (const row of message.buttons) {
+      for (const button of row) {
+        if (button.url) {
+          urls.push(button.url);
+        }
+      }
+    }
+  }
+  
+  return urls;
+}
+
+/**
  * Extract and prioritize URLs from message
  * Returns ONLY direct URLs, skips short links
  */
-function extractDirectUrls(text) {
-  if (!text) return [];
+function extractDirectUrls(text, message = null) {
+  const allUrls = [];
   
-  const urlRegex = /(https?:\/\/[^\s]+)/gi;
-  const matches = text.match(urlRegex) || [];
+  // Get URLs from text
+  if (text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/gi;
+    const matches = text.match(urlRegex) || [];
+    allUrls.push(...matches);
+  }
+  
+  // Get URLs from message entities and buttons
+  if (message) {
+    const messageUrls = extractAllUrls(message);
+    allUrls.push(...messageUrls);
+  }
   
   const directUrls = [];
   const seenUrls = new Set();
   
-  for (const url of matches) {
-    // Clean URL (remove trailing punctuation)
-    const cleanUrl = url.replace(/[.,;!?)]+$/, '');
+  for (const url of allUrls) {
+    // Clean URL (remove trailing punctuation and ?)
+    const cleanUrl = url.replace(/[.,;!?)\]]+$/, '');
     
     // Skip if already seen
     if (seenUrls.has(cleanUrl.toLowerCase())) continue;
@@ -292,8 +339,8 @@ async function searchChannelsSmart(keyword) {
         // Check keyword
         if (!matchesKeyword(messageText, keyword)) continue;
         
-        // Extract direct URLs only
-        const directUrls = extractDirectUrls(messageText);
+        // Extract direct URLs from text AND buttons
+        const directUrls = extractDirectUrls(messageText, message);
         
         if (directUrls.length === 0) continue;
         
