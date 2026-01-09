@@ -70,13 +70,13 @@ const PRIORITY_DOMAINS = [
   'position.az',
   'vakansiya.az',
   'glorri.az',
-  'jobs.glorri.az'
+  'jobs.glorri.az',
+  'buff.ly'  // Used by jobsearch.az
 ];
 
-// Short link domains to skip
+// Short link domains to skip (buff.ly removed - used by jobsearch.az)
 const SHORT_LINK_DOMAINS = [
   't.me',
-  'buff.ly',
   'bit.ly',
   'tinyurl.com',
   'shorturl.at',
@@ -375,17 +375,10 @@ bot.onText(/\/start/, (msg) => {
   const message = `
 👋 Salam ${firstName}!
 
-🎯 Smart iş axtarışı botu
+🎯 **Smart iş axtarışı botu**
 
-Mən ${JOB_CHANNELS.length} Telegram kanalından vakansiya tapıram.
 
-✨ Xüsusiyyətlər:
-• Yalnız birbaşa linklər (boss.az, linkedin.com)
-• Dublikat yoxdur
-• Son 30 gün
-• Maksimum 10 nəticə
-
-🔍 İstifadə:
+🔍 **İstifadə:**
 İş mövqeyini yazın:
 • "frontend developer"
 • "mühasib"
@@ -401,21 +394,21 @@ bot.onText(/\/help/, (msg) => {
   const chatId = msg.chat.id;
   
   const message = `
-📖 Kömək
+📖 **Kömək**
 
-Əmrlər:
+**Əmrlər:**
 /start - Başlat
 /help - Kömək
 /channels - Kanal siyahısı
 /stats - Statistika
 
-Axtarış:
+**Axtarış:**
 İş mövqeyini yazın, məsələn:
 • frontend developer
 • react
 • mühasib
 
-Nəticə formatı:
+**Nəticə formatı:**
 • Kanal adı
 • Şirkət (varsa)
 • Vakansiya adı
@@ -433,7 +426,7 @@ bot.onText(/\/channels/, (msg) => {
   const chatId = msg.chat.id;
   
   const message = `
-📡 Monitorinq edilən kanallar:
+📡 **Monitorinq edilən kanallar:**
 
 ${JOB_CHANNELS.map((ch, i) => `${i + 1}. ${ch}`).join('\n')}
 
@@ -449,7 +442,7 @@ bot.onText(/\/stats/, (msg) => {
   const chatId = msg.chat.id;
   
   const message = `
-📊 Statistika
+📊 **Statistika**
 
 🔍 Axtarışlar: ${stats.totalSearches}
 👥 İstifadəçilər: ${stats.uniqueUsers.size}
@@ -504,11 +497,11 @@ bot.on('message', async (msg) => {
     }
     
     // Format results
-    let response = `🔍 Tapılan vakansiyalar (son 30 gün):\n\n`;
+    let response = `🔍 **Tapılan vakansiyalar (son 30 gün):**\n\n`;
     response += `📊 Ümumi: ${results.length} unikal elan\n\n`;
     
     for (const result of results) {
-      response += `• ${result.channel}\n`;
+      response += `• **${result.channel}**\n`;
       
       if (result.company) {
         response += `🏢 ${result.company}\n`;
