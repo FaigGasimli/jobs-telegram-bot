@@ -21,6 +21,7 @@ const input = require('input');
 // ============================================================================
 
 const JOB_CHANNELS = [
+  // Original channels
   '@smartjobit',
   '@smartjobaztecrube',
   '@iktisleri',
@@ -33,7 +34,21 @@ const JOB_CHANNELS = [
   '@jobsearchazerbaijan',
   '@offeraz',
   '@hellojobaz',
-  '@iselanlaritut'
+  '@iselanlaritut',
+  
+  // New channels added
+  '@maliyyevakansiyalar',      // Maliyyə sektorunda vakansiyalar (2.5K)
+  '@qadinisleri',               // Qadın işləri (10.5K)
+  '@dizaynvakansiyalari',       // Dizayn vakansiyaları (2.7K)
+  '@azvakaz',                   // AzVak - Azərbaycanda vakansiyalar (47.5K)
+  '@HRIN_AZ',                   // HRIN.AZ - İş elanları (9.9K)
+  '@smartjobaz',                // SmartJob.az - iş elanları (41.8K)
+  '@busy_az_vakansiyalar',      // Busy.az Vakansiyalar (24.3K)
+  '@edumapazz',                 // Edumap.az - Vakansiyalar (26K)
+  '@vakansiyalarbaki',          // Vakansiyalar İnzibati/Xidmət (11.1K)
+  '@reklamvakansiyalari',       // Marketinq, reklam və mətbuat (1.4K)
+  '@position_az',               // Position.az (11.4K)
+  '@glori_jobs'                 // Glorri - Vakansiyalar (44.5K)
 ];
 
 // Priority domains for direct links
@@ -46,7 +61,16 @@ const PRIORITY_DOMAINS = [
   'hellojob.az',
   'work.az',
   'career.az',
-  'hr.gov.az'
+  'hr.gov.az',
+  'offer.az',
+  'azvak.az',
+  'hrin.az',
+  'busy.az',
+  'edumap.az',
+  'position.az',
+  'vakansiya.az',
+  'glorri.az',
+  'jobs.glorri.az'
 ];
 
 // Short link domains to skip
@@ -256,7 +280,7 @@ async function searchChannelsSmart(keyword) {
       console.log(`📡 ${channelUsername} oxunur...`);
       
       const channel = await client.getEntity(channelUsername);
-      const messages = await client.getMessages(channel, { limit: 100 });
+      const messages = await client.getMessages(channel, { limit: 50 });  // 50 per channel × 24 channels = 1200 total
       
       for (const message of messages) {
         // Check date (last 30 days)
