@@ -375,17 +375,17 @@ bot.onText(/\/start/, (msg) => {
   const message = `
 👋 Salam ${firstName}!
 
-🎯 **Smart iş axtarışı botu**
+🎯 Smart iş axtarışı botu
 
 Mən ${JOB_CHANNELS.length} Telegram kanalından vakansiya tapıram.
 
-✨ **Xüsusiyyətlər:**
+✨ Xüsusiyyətlər:
 • Yalnız birbaşa linklər (boss.az, linkedin.com)
 • Dublikat yoxdur
 • Son 30 gün
 • Maksimum 10 nəticə
 
-🔍 **İstifadə:**
+🔍 İstifadə:
 İş mövqeyini yazın:
 • "frontend developer"
 • "mühasib"
@@ -401,21 +401,21 @@ bot.onText(/\/help/, (msg) => {
   const chatId = msg.chat.id;
   
   const message = `
-📖 **Kömək**
+📖 Kömək
 
-**Əmrlər:**
+Əmrlər:
 /start - Başlat
 /help - Kömək
 /channels - Kanal siyahısı
 /stats - Statistika
 
-**Axtarış:**
+Axtarış:
 İş mövqeyini yazın, məsələn:
 • frontend developer
 • react
 • mühasib
 
-**Nəticə formatı:**
+Nəticə formatı:
 • Kanal adı
 • Şirkət (varsa)
 • Vakansiya adı
@@ -433,7 +433,7 @@ bot.onText(/\/channels/, (msg) => {
   const chatId = msg.chat.id;
   
   const message = `
-📡 **Monitorinq edilən kanallar:**
+📡 Monitorinq edilən kanallar:
 
 ${JOB_CHANNELS.map((ch, i) => `${i + 1}. ${ch}`).join('\n')}
 
@@ -449,7 +449,7 @@ bot.onText(/\/stats/, (msg) => {
   const chatId = msg.chat.id;
   
   const message = `
-📊 **Statistika**
+📊 Statistika
 
 🔍 Axtarışlar: ${stats.totalSearches}
 👥 İstifadəçilər: ${stats.uniqueUsers.size}
@@ -504,11 +504,11 @@ bot.on('message', async (msg) => {
     }
     
     // Format results
-    let response = `🔍 **Tapılan vakansiyalar (son 30 gün):**\n\n`;
+    let response = `🔍 Tapılan vakansiyalar (son 30 gün):\n\n`;
     response += `📊 Ümumi: ${results.length} unikal elan\n\n`;
     
     for (const result of results) {
-      response += `• **${result.channel}**\n`;
+      response += `• ${result.channel}\n`;
       
       if (result.company) {
         response += `🏢 ${result.company}\n`;
@@ -536,11 +536,11 @@ bot.on('message', async (msg) => {
       if (current) chunks.push(current);
       
       for (const chunk of chunks) {
-        await bot.sendMessage(chatId, chunk, { parse_mode: 'Markdown' });
+        await bot.sendMessage(chatId, chunk);
         await new Promise(r => setTimeout(r, 500));
       }
     } else {
-      await bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
+      await bot.sendMessage(chatId, response);
     }
     
   } catch (error) {
